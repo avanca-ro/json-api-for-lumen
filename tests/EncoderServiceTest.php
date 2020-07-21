@@ -6,7 +6,7 @@ use Neomerx\JsonApi\Encoder\Encoder;
 
 class EncoderServiceTest extends \PHPUnit\Framework\TestCase
 {
-    private $encoder_service;
+    private $encoderService;
 
     public function setUp(): void
     {
@@ -34,31 +34,31 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ]
         ];
-        $this->encoder_service = new EncoderService($config);
+        $this->encoderService = new EncoderService($config);
     }
 
     public function testGetDefaultEncoder()
     {
-        $this->assertInstanceOf(Encoder::class, $this->encoder_service->getEncoder());
+        $this->assertInstanceOf(Encoder::class, $this->encoderService->getEncoder());
     }
 
     public function testGetNamedEncoder()
     {
-        $this->assertInstanceOf(Encoder::class, $this->encoder_service->getEncoder('test-1'));
-        $this->assertInstanceOf(Encoder::class, $this->encoder_service->getEncoder('test-2'));
+        $this->assertInstanceOf(Encoder::class, $this->encoderService->getEncoder('test-1'));
+        $this->assertInstanceOf(Encoder::class, $this->encoderService->getEncoder('test-2'));
     }
 
     public function testGetUnconfiguredEncoder()
     {
         $this->expectException(\Exception::class);
-        $this->encoder_service->getEncoder('missing');
+        $this->encoderService->getEncoder('missing');
     }
 
 
     public function testEncoderIsSingleton()
     {
-        $encoder = $this->encoder_service->getEncoder();
-        $this->assertSame($encoder, $this->encoder_service->getEncoder());
+        $encoder = $this->encoderService->getEncoder();
+        $this->assertSame($encoder, $this->encoderService->getEncoder());
     }
 
     public function testGetEncoderOptionsDefaults()
@@ -67,11 +67,11 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
 
         $service = new EncoderService([]);
 
-        $encoder_options = $method->invokeArgs($service, [[]]);
+        $encoderOptions = $method->invokeArgs($service, [[]]);
 
-        $this->assertEquals(0, $encoder_options['options']);
-        $this->assertNull($encoder_options['urlPrefix']);
-        $this->assertEquals(512, $encoder_options['depth']);
+        $this->assertEquals(0, $encoderOptions['options']);
+        $this->assertNull($encoderOptions['urlPrefix']);
+        $this->assertEquals(512, $encoderOptions['depth']);
     }
 
     public function testGetEncoderOptions()
@@ -94,11 +94,11 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         ];
 
         foreach ($configs as $config) {
-            $encoder_options = $method->invokeArgs($service, [$config]);
+            $encoderOptions = $method->invokeArgs($service, [$config]);
 
-            $this->assertEquals($config['options'], $encoder_options['options']);
-            $this->assertEquals($config['urlPrefix'], $encoder_options['urlPrefix']);
-            $this->assertEquals($config['depth'], $encoder_options['depth']);
+            $this->assertEquals($config['options'], $encoderOptions['options']);
+            $this->assertEquals($config['urlPrefix'], $encoderOptions['urlPrefix']);
+            $this->assertEquals($config['depth'], $encoderOptions['depth']);
         }
     }
 
@@ -107,8 +107,8 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         $config = [
             'schemas' => [],
         ];
-        $encoder_service = new EncoderService($config);
-        $encoder = $encoder_service->getEncoder();
+        $encoderService = new EncoderService($config);
+        $encoder = $encoderService->getEncoder();
         $this->assertNull($this->getProperty($encoder, 'meta'));
         $this->assertNull($this->getProperty($encoder, 'jsonApiVersion'));
         $this->assertNull($this->getProperty($encoder, 'jsonApiMeta'));
@@ -120,8 +120,8 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
                 'apiVersion' => '1.0',
             ],
         ];
-        $encoder_service = new EncoderService($config);
-        $encoder = $encoder_service->getEncoder();
+        $encoderService = new EncoderService($config);
+        $encoder = $encoderService->getEncoder();
         $this->assertEquals('1.1', $this->getProperty($encoder, 'jsonApiVersion'));
         $this->assertNull($this->getProperty($encoder, 'jsonApiMeta'));
         $this->assertEquals($config['meta'], $this->getProperty($encoder, 'meta'));
@@ -132,8 +132,8 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
                 'foo' => 'bar',
             ],
         ];
-        $encoder_service = new EncoderService($config);
-        $encoder = $encoder_service->getEncoder();
+        $encoderService = new EncoderService($config);
+        $encoder = $encoderService->getEncoder();
         $this->assertEquals('1.1', $this->getProperty($encoder, 'jsonApiVersion'));
         $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'jsonApiMeta'));
     }

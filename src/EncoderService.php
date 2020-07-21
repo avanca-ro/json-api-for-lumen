@@ -37,10 +37,10 @@ class EncoderService
                 throw new \Exception(sprintf('No configuration found for %s "%s"', Encoder::class, $name));
             }
 
-            $encoder_options = isset($config['encoder-options']) && is_array($config['encoder-options']) ?
+            $encoderOptions = isset($config['encoder-options']) && is_array($config['encoder-options']) ?
                 $config['encoder-options'] :
                 [];
-            $options = $this->getEncoderOptions($encoder_options);
+            $options = $this->getEncoderOptions($encoderOptions);
 
             $encoder = Encoder::instance($this->config['schemas'])
                 ->withEncodeOptions($options['options'])
