@@ -42,7 +42,7 @@ class MalformedRequest implements ErrorInterface
      */
     public function getStatus(): string
     {
-        return "400";
+        return "error";
     }
 
     /**
@@ -52,7 +52,7 @@ class MalformedRequest implements ErrorInterface
      */
     public function getCode(): ?string
     {
-        return null;
+        return (string)\Illuminate\Http\Response::HTTP_BAD_REQUEST;
     }
 
     /**
