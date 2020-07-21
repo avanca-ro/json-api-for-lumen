@@ -4,6 +4,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Updates follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.0.0] - 2020-07-21
+### Added
+- Upgraded to Lumen 7 and neomerx/json-api 4.*
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Nothing
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
+
 ## [1.0.2] - 2016-04-27
 ### Added
 - Nothing

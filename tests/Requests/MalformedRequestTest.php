@@ -2,7 +2,7 @@
 
 namespace RealPage\JsonApi\Requests;
 
-use Neomerx\JsonApi\Contracts\Document\ErrorInterface;
+use Neomerx\JsonApi\Contracts\Schema\ErrorInterface;
 
 class MalformedRequestTest extends \PHPUnit\Framework\TestCase
 {
@@ -10,7 +10,7 @@ class MalformedRequestTest extends \PHPUnit\Framework\TestCase
     /** @var MalformedRequest */
     protected $error;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
 
@@ -36,8 +36,10 @@ class MalformedRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->error->getId());
         $this->assertNull($this->error->getLinks());
+        $this->assertNull($this->error->getTypeLinks());
         $this->assertNull($this->error->getCode());
         $this->assertNull($this->error->getSource());
+        $this->assertFalse($this->error->hasMeta());
         $this->assertNull($this->error->getMeta());
     }
 }

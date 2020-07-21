@@ -10,7 +10,7 @@ class EnforceMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testHandlesInvalidExistingContentTypeRequests()
     {
-        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->setMethods([
+        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->onlyMethods([
             'getContentType',
             'validateExistingContentType',
         ])->getMock();
@@ -29,7 +29,7 @@ class EnforceMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testHandlesIncorrectHeadersForData()
     {
-        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->setMethods([
+        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->onlyMethods([
             'getContentType',
             'hasCorrectHeadersForData',
             'validateExistingContentType',
@@ -50,7 +50,7 @@ class EnforceMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testHandlesIncorrectlySetAcceptHeader()
     {
-        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->setMethods([
+        $guard   = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->onlyMethods([
             'getContentType',
             'hasCorrectHeadersForData',
             'hasCorrectlySetAcceptHeader',
@@ -73,14 +73,14 @@ class EnforceMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testHandlesCorrectlyFormattedRequest()
     {
-        $guard    = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->setMethods([
+        $guard    = $this->getMockBuilder(MediaTypeGuard::class)->disableOriginalConstructor()->onlyMethods([
             'getContentType',
             'hasCorrectHeadersForData',
             'hasCorrectlySetAcceptHeader',
             'validateExistingContentType',
         ])->getMock();
         $request  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
-        $response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
         $next     = function () use ($response) {
             return $response;
         };

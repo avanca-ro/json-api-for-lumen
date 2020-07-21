@@ -12,7 +12,7 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
     /** @var MediaTypeGuard */
     protected $guard;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contentType        = 'application/vnd.api+json';
         $this->acceptHeaderPolicy = 'default';
@@ -27,9 +27,9 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 
     public function testExistingContentTypeValidation()
     {
-        $noContentTypeRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $badContentTypeRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $validContentTypeRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $noContentTypeRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $badContentTypeRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $validContentTypeRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
         $noContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('');
         $badContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/json');
         $validContentTypeRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json');
@@ -41,9 +41,9 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
 
     public function testRecognizesIfRequestMustHaveContentTypeHeader()
     {
-        $getRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
-        $postRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
-        $patchRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['method'])->getMock();
+        $getRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['method'])->getMock();
+        $postRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['method'])->getMock();
+        $patchRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['method'])->getMock();
         $getRequest->expects($this->any())->method('method')->willReturn('GET');
         $postRequest->expects($this->any())->method('method')->willReturn('POST');
         $patchRequest->expects($this->any())->method('method')->willReturn('POST');
@@ -68,27 +68,27 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
     {
         $validContentType    = 'application/vnd.api+json';
         $invalidContentType  = 'application/json';
-        $getValidRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $getValidRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
-        $getInvalidRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $getInvalidRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
-        $getWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $getWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
-        $postValidRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $postValidRequest    = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
-        $postInvalidRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $postInvalidRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
-        $postWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods([
+        $postWithoutRequest  = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods([
             'header',
             'method',
         ])->getMock();
@@ -118,11 +118,11 @@ class MediaTypeGuardTest extends \PHPUnit\Framework\TestCase
         $guardIgnoringAcceptHeader = new MediaTypeGuard($this->contentType, 'ignore');
         $guardRequiringAcceptHeader = new MediaTypeGuard($this->contentType, 'require');
 
-        $validWildcardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $validStandardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $invalidStandardAcceptRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $invalidAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
-        $withoutAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->setMethods(['header'])->getMock();
+        $validWildcardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $validStandardAcceptRequest   = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $invalidStandardAcceptRequest = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $invalidAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
+        $withoutAcceptRequest         = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->onlyMethods(['header'])->getMock();
         $validWildcardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('*/*');
         $validStandardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json, application/json');
         $invalidStandardAcceptRequest->expects($this->any())->method('header')->with('Accept')->willReturn('application/vnd.api+json; test=true, application/json');

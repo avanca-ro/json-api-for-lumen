@@ -2,7 +2,7 @@
 
 namespace RealPage\JsonApi\Validation;
 
-use Neomerx\JsonApi\Exceptions\ErrorCollection;
+use Neomerx\JsonApi\Schema\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 
 class RequestFailedValidationTest extends \PHPUnit\Framework\TestCase
@@ -14,7 +14,7 @@ class RequestFailedValidationTest extends \PHPUnit\Framework\TestCase
     /** @var RequestFailedValidation */
     protected $exception;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

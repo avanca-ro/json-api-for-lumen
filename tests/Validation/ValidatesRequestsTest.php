@@ -4,9 +4,7 @@ namespace RealPage\JsonApi\Validation;
 
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
-use Neomerx\JsonApi\Document\Error;
-use Neomerx\JsonApi\Exceptions\ErrorCollection;
-use Neomerx\JsonApi\Exceptions\JsonApiException;
+use Neomerx\JsonApi\Schema\Error;
 use Mockery;
 use RealPage\JsonApi\Requests\Request;
 
@@ -17,7 +15,7 @@ class ValidatesRequestsTest extends \PHPUnit\Framework\TestCase
     /** @var ValidatesRequests */
     protected $validatesRequests;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

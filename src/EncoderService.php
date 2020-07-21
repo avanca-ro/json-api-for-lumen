@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace RealPage\JsonApi;
 
+use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Encoder\Encoder;
-use Neomerx\JsonApi\Encoder\EncoderOptions;
 
 /**
  * Class EncoderService
@@ -31,7 +31,7 @@ class EncoderService
         if (!isset($this->encoders[$name])) {
             if ($name === 'default') {
                 $config = $this->config;
-            } elseif(isset($this->config['encoders'][$name])) {
+            } elseif (isset($this->config['encoders'][$name])) {
                 $config = $this->config['encoders'][$name];
             } else {
                 throw new \Exception(sprintf('No configuration found for %s "%s"', Encoder::class, $name));
@@ -42,16 +42,20 @@ class EncoderService
                 [];
             $options = $this->getEncoderOptions($encoder_options);
 
-            $encoder = Encoder::instance(
-                $this->config['schemas'],
-                $options
-            );
+            $encoder = Encoder::instance($this->config['schemas'])
+                ->withEncodeOptions($options['options'])
+                ->withEncodeDepth($options['depth']);
+
+            if ($options['urlPrefix']) {
+                $encoder->withUrlPrefix($options['urlPrefix']);
+            }
 
             if (isset($config['jsonapi'])) {
                 if (is_array($config['jsonapi'])) {
-                    $encoder->withJsonApiVersion($config['jsonapi']);
+                    $encoder->withJsonApiVersion(EncoderInterface::JSON_API_VERSION);
+                    $encoder->withJsonApiMeta($config['jsonapi']);
                 } elseif ($config['jsonapi'] === true) {
-                    $encoder->withJsonApiVersion();
+                    $encoder->withJsonApiVersion(EncoderInterface::JSON_API_VERSION);
                 }
             }
             if (isset($config['meta']) && is_array($config['meta'])) {
@@ -74,6 +78,11 @@ class EncoderService
         $depth = isset($config['depth']) && is_int($config['depth']) ?
             $config['depth'] :
             512;
-        return new EncoderOptions($options, $urlPrefix, $depth);
+
+        return [
+            'options' => $options,
+            'urlPrefix' => $urlPrefix,
+            'depth' => $depth
+        ];
     }
 }

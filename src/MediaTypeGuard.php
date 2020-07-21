@@ -3,10 +3,12 @@
 namespace RealPage\JsonApi;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MediaTypeGuard
 {
     protected $contentType;
+    protected $acceptHeaderPolicy;
 
     public function __construct(string $contentType, string $acceptHeaderPolicy)
     {
@@ -26,7 +28,7 @@ class MediaTypeGuard
 
     public function validateExistingContentType(Request $request): bool
     {
-        return str_is($this->getContentType(), $request->header('Accept')) || str_is('', $request->header('Accept'));
+        return Str::is($this->getContentType(), $request->header('Accept')) || Str::is('', $request->header('Accept'));
     }
 
     public function clientRequestMustHaveContentTypeHeader(Request $request)
@@ -37,7 +39,7 @@ class MediaTypeGuard
 
     public function contentTypeIsValid(string $contentType): bool
     {
-        return str_is($this->getContentType(), $contentType);
+        return Str::is($this->getContentType(), $contentType);
     }
 
     public function hasCorrectHeadersForData(Request $request): bool

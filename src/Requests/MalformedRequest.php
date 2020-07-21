@@ -2,7 +2,7 @@
 
 namespace RealPage\JsonApi\Requests;
 
-use Neomerx\JsonApi\Contracts\Document\ErrorInterface;
+use Neomerx\JsonApi\Contracts\Schema\ErrorInterface;
 
 class MalformedRequest implements ErrorInterface
 {
@@ -20,8 +20,19 @@ class MalformedRequest implements ErrorInterface
      *
      * @return null|array<string,\Neomerx\JsonApi\Contracts\Schema\LinkInterface>
      */
-    public function getLinks()
+    public function getLinks(): ?iterable
     {
+        return null;
+    }
+
+    /**
+     * Get type links
+     *
+     * @return null|iterable
+     */
+    public function getTypeLinks(): ?iterable
+    {
+        return null;
     }
 
     /**
@@ -29,7 +40,7 @@ class MalformedRequest implements ErrorInterface
      *
      * @return string|null
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return 400; // bad request
     }
@@ -39,8 +50,9 @@ class MalformedRequest implements ErrorInterface
      *
      * @return string|null
      */
-    public function getCode()
+    public function getCode(): ?string
     {
+        return null;
     }
 
     /**
@@ -50,7 +62,7 @@ class MalformedRequest implements ErrorInterface
      *
      * @return string|null
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return 'Request json malformed';
     }
@@ -60,7 +72,7 @@ class MalformedRequest implements ErrorInterface
      *
      * @return string|null
      */
-    public function getDetail()
+    public function getDetail(): string
     {
         return 'The request json is malformed and could not be parsed.';
     }
@@ -73,8 +85,19 @@ class MalformedRequest implements ErrorInterface
      *
      * @return array|null
      */
-    public function getSource()
+    public function getSource(): ?array
     {
+        return null;
+    }
+
+    /**
+     * Get has meta
+     *
+     * @return bool
+     */
+    public function hasMeta(): bool
+    {
+        return false;
     }
 
     /**
@@ -84,5 +107,6 @@ class MalformedRequest implements ErrorInterface
      */
     public function getMeta()
     {
+        return null;
     }
 }

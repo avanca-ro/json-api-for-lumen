@@ -4,11 +4,10 @@ namespace RealPage\JsonApi\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request as IlluminateRequest;
-use Neomerx\JsonApi\Document\Error;
-use Neomerx\JsonApi\Document\Link;
+use Neomerx\JsonApi\Schema\Error;
+use Neomerx\JsonApi\Schema\Link;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use RealPage\JsonApi\Authorization\RequestFailedAuthorization;
-use RealPage\JsonApi\ErrorFactory;
 use RealPage\JsonApi\Validation\RequestFailedValidation;
 use RealPage\JsonApi\Validation\ValidatesRequests;
 
@@ -72,12 +71,14 @@ class Request
             throw new RequestFailedAuthorization(
                 new Error(
                     $id = null,
-                    $link = new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3'),
+                    $link = new Link(true, 'https://tools.ietf.org/html/rfc7231#section-6.5.3', false),
+                    null,
                     $status = '403',
                     $code = null,
                     $title = 'Forbidden',
                     $desc = 'Access is denied for one or more of the specified resources',
                     $source,
+                    $hasMeta = false,
                     $meta = null
                 )
             );

@@ -6,7 +6,7 @@ use Neomerx\JsonApi\Exceptions\JsonApiException;
 
 class RequestFailedAuthorization extends JsonApiException
 {
-    public function getHttpCode()
+    public function getHttpCode(): int
     {
         return 403;
     }

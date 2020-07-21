@@ -2,7 +2,7 @@
 
 namespace RealPage\JsonApi\Authorization;
 
-use Neomerx\JsonApi\Exceptions\ErrorCollection;
+use Neomerx\JsonApi\Schema\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 
 class RequestFailedAuthorizationTest extends \PHPUnit\Framework\TestCase
@@ -14,7 +14,7 @@ class RequestFailedAuthorizationTest extends \PHPUnit\Framework\TestCase
     /** @var RequestFailedAuthorization */
     protected $exception;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

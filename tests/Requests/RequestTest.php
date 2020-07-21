@@ -4,9 +4,9 @@ namespace RealPage\JsonApi\Requests;
 
 use Illuminate\Http\Request as IlluminateRequest;
 use Mockery;
-use Neomerx\JsonApi\Document\Link;
-use Neomerx\JsonApi\Document\Error;
-use Neomerx\JsonApi\Exceptions\ErrorCollection;
+use Neomerx\JsonApi\Schema\Link;
+use Neomerx\JsonApi\Schema\Error;
+use Neomerx\JsonApi\Schema\ErrorCollection;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use PHPUnit\Framework\TestCase;
 use RealPage\JsonApi\Authorization\RequestFailedAuthorization;
@@ -24,7 +24,7 @@ class RequestTest extends TestCase
     /** @var \RealPage\JsonApi\Requests\Request */
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -78,7 +78,15 @@ class RequestTest extends TestCase
 
         $this->request->setValidator($validator);
 
-        $this->request->validate();
+        $didThrowException = false;
+
+        try {
+            $this->request->validate();
+        } catch (\Exception $e) {
+            $didThrowException = true;
+        }
+
+        $this->assertFalse($didThrowException);
     }
 
     /** @test */
@@ -151,12 +159,14 @@ class RequestTest extends TestCase
     {
         $expectedError = new Error(
             $id = null,
-            $link = new Link('https://tools.ietf.org/html/rfc7231#section-6.5.3'),
+            $link = new Link(true, 'https://tools.ietf.org/html/rfc7231#section-6.5.3', false),
+            $typeLinks = null,
             $status = '403',
             $code = null,
             $title = 'Forbidden',
             $desc = 'Access is denied for one or more of the specified resources',
             $source = null,
+            $hasMeta = false,
             $meta = null
         );
 

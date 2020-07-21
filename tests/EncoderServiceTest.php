@@ -6,9 +6,11 @@ use Neomerx\JsonApi\Encoder\Encoder;
 
 class EncoderServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    private $encoder_service;
+
+    public function setUp(): void
     {
-        $this->config = [
+        $config = [
             'schemas' => [],
             'encoders' => [
                 'test-1' => [
@@ -32,7 +34,7 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ]
         ];
-        $this->encoder_service = new EncoderService($this->config);
+        $this->encoder_service = new EncoderService($config);
     }
 
     public function testGetDefaultEncoder()
@@ -67,9 +69,9 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
 
         $encoder_options = $method->invokeArgs($service, [[]]);
 
-        $this->assertEquals(0, $encoder_options->getOptions());
-        $this->assertNull($encoder_options->getUrlPrefix());
-        $this->assertEquals(512, $encoder_options->getDepth());
+        $this->assertEquals(0, $encoder_options['options']);
+        $this->assertNull($encoder_options['urlPrefix']);
+        $this->assertEquals(512, $encoder_options['depth']);
     }
 
     public function testGetEncoderOptions()
@@ -94,9 +96,9 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         foreach ($configs as $config) {
             $encoder_options = $method->invokeArgs($service, [$config]);
 
-            $this->assertEquals($config['options'], $encoder_options->getOptions());
-            $this->assertEquals($config['urlPrefix'], $encoder_options->getUrlPrefix());
-            $this->assertEquals($config['depth'], $encoder_options->getDepth());
+            $this->assertEquals($config['options'], $encoder_options['options']);
+            $this->assertEquals($config['urlPrefix'], $encoder_options['urlPrefix']);
+            $this->assertEquals($config['depth'], $encoder_options['depth']);
         }
     }
 
@@ -108,8 +110,8 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         $encoder_service = new EncoderService($config);
         $encoder = $encoder_service->getEncoder();
         $this->assertNull($this->getProperty($encoder, 'meta'));
-        $this->assertFalse($this->getProperty($encoder, 'isAddJsonApiVersion'));
-        $this->assertNull($this->getProperty($encoder, 'jsonApiVersionMeta'));
+        $this->assertNull($this->getProperty($encoder, 'jsonApiVersion'));
+        $this->assertNull($this->getProperty($encoder, 'jsonApiMeta'));
 
         $config = [
             'schemas' => [],
@@ -120,9 +122,9 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         ];
         $encoder_service = new EncoderService($config);
         $encoder = $encoder_service->getEncoder();
+        $this->assertEquals('1.1', $this->getProperty($encoder, 'jsonApiVersion'));
+        $this->assertNull($this->getProperty($encoder, 'jsonApiMeta'));
         $this->assertEquals($config['meta'], $this->getProperty($encoder, 'meta'));
-        $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'isAddJsonApiVersion'));
-        $this->assertNull($this->getProperty($encoder, 'jsonApiVersionMeta'));
 
         $config = [
             'schemas' => [],
@@ -132,8 +134,8 @@ class EncoderServiceTest extends \PHPUnit\Framework\TestCase
         ];
         $encoder_service = new EncoderService($config);
         $encoder = $encoder_service->getEncoder();
-        $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'jsonApiVersionMeta'));
-        $this->assertTrue($this->getProperty($encoder, 'isAddJsonApiVersion'));
+        $this->assertEquals('1.1', $this->getProperty($encoder, 'jsonApiVersion'));
+        $this->assertEquals($config['jsonapi'], $this->getProperty($encoder, 'jsonApiMeta'));
     }
 
     protected static function getProperty($object, $name)
